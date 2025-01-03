@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 import dagshub
 dagshub.init(repo_owner='asif1106', repo_name='mlflow-dagshub-demo', mlflow=True)
@@ -65,13 +66,9 @@ with mlflow.start_run():
     print('accuracy', accuracy)
 
     #logging datasets
-    train_df = X_train
-    train_df['variety'] = y_train
-    test_df = X_test
-    test_df['variety'] = y_test
-    
-    train_df = mlflow.data.from_pandas(train_df)
-    test_df = mlflow.data.from_pandas(test_df)
+
+    train_df = mlflow.data.from_pandas(pd.DataFrame(X_train))
+    test_df = mlflow.data.from_pandas(pd.DataFrame(X_test))
 
     mlflow.log_input(train_df,"train")
     mlflow.log_input(test_df,"test")
